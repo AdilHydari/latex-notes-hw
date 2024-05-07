@@ -1,0 +1,198 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs} 
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\begin{document}
+	\title{Homework 4 - Computer Systems}
+	\author{Adil Hydari}
+	\date{}
+	\maketitle
+	
+	% Question 1
+	\section*{Q1: Signal Masking in Parent Process}
+	\subsection*{1.1 Normal Execution}
+	The parent process starts by constructing a signal mask that excludes four specific signals. By blocking \textbf{SIGTSTP} (terminal stop), \textbf{SIGTERM} (termination request), \textbf{SIGINT} (keyboard interrupt), and \textbf{SIGFPE} (arithmetic error), it ensures that any critical sections of code are not interrupted. This mask applies from process start to the first explicit handler invocation.
+	
+	\subsection*{1.2 Handler on SIGFPE, SIGHUP, SIGCHLD}
+	When \texttt{sig\_handler} is invoked for \textbf{SIGFPE}, \textbf{SIGHUP} (hangup), or \textbf{SIGCHLD} (child status change), it inherits the existing mask. This prevents re-entry or interruption by those same signals while the handler runs, ensuring a consistent recovery procedure.
+	
+	\subsection*{1.3 Handler on SIGILL or SIGQUIT}
+	If an illegal instruction (\textbf{SIGILL}) or quit request (\textbf{SIGQUIT}) arrives, the handler temporarily adds \textbf{SIGABRT} (abort) and \textbf{SIGQUIT} itself to the mask, on top of the original four. This extended mask protects the handler from nested aborts or quits, allowing it to log diagnostics or perform cleanup safely.
+	
+	\subsection*{1.4 Handler on SIGUSR1}
+	A separate handler \texttt{sig\_usr1} addresses \textbf{SIGUSR1}. During its execution, the mask is extended to block \textbf{SIGABRT} and retain \textbf{SIGTERM}, plus the four standard signals. This guarantees that user-defined operations complete without unexpected termination.
+	
+	% Question 2
+	\section*{Q2: Signal Handling in Parent Process}
+	\subsection*{2.1 \texttt{sig\_handler} via \texttt{sigaction}}
+	Using \texttt{sigaction}, the parent sets a persistent handler for:
+	\begin{itemize}
+		\item \textbf{SIGILL}: catches illegal instruction faults.
+		\item \textbf{SIGINT}: handles keyboard interrupts when unmasked.
+		\item \textbf{SIGQUIT}: intercepts user-initiated quits.
+	\end{itemize}
+	This handler remains installed until explicitly changed, ensuring consistent behavior on each arrival.
+	
+	\subsection*{2.2 \texttt{sig\_handler} via \texttt{signal} (one-shot)}
+	A one-shot installation via \texttt{signal} is used for:
+	\begin{itemize}
+		\item \textbf{SIGFPE}: arithmetic exceptions.
+		\item \textbf{SIGHUP}: hangup notifications.
+		\item \textbf{SIGTSTP}: terminal stops.
+		\item \textbf{SIGCHLD}: child termination or stop.
+	\end{itemize}
+	After handling one occurrence, the disposition resets to default, allowing subsequent signals to use their default action.
+	
+	\subsection*{2.3 \texttt{sig\_usr1} via \texttt{sigaction}}
+	A persistent handler is installed for \textbf{SIGUSR1}, enabling the process to perform custom work on every delivery of the user-defined signal.
+	
+	% Question 3
+	\section*{Q3: Signal Masking in Child Process}
+	\subsection*{3.1 Normal Execution}
+	The child process begins by blocking five signals to guard initialization:
+	\begin{itemize}
+		\item \textbf{SIGABRT}: aborts.
+		\item \textbf{SIGTSTP}: stops.
+		\item \textbf{SIGTERM}: terminations.
+		\item \textbf{SIGSEGV}: segmentation faults.
+		\item \textbf{SIGILL}: illegal instructions.
+	\end{itemize}
+	This mask ensures safe setup and shared-resource protection.
+	
+	\subsection*{3.2 Handler on SIGFPE, SIGHUP, SIGURG}
+	When handling \textbf{SIGFPE}, \textbf{SIGHUP}, or \textbf{SIGURG} (urgent I/O), the handler retains the full five-signal mask, avoiding nested faults.
+	
+	\subsection*{3.3 Handler on SIGQUIT, SIGILL, SIGINT, SIGTSTP}
+	Invoking \texttt{sig\_handler} for these signals adds \textbf{SIGABRT} and reaffirms \textbf{SIGTSTP}, while continuing to block \textbf{SIGTERM}, \textbf{SIGSEGV}, and \textbf{SIGILL}. This combination prevents simultaneous control-flow interrupts.
+	
+	\subsection*{3.4 Handler on SIGUSR1}
+	The \texttt{sig\_usr1} handler in the child blocks \textbf{SIGABRT}, \textbf{SIGTSTP}, and \textbf{SIGTERM}. It also keeps \textbf{SIGSEGV} and \textbf{SIGILL} masked, ensuring critical cleanup can complete.
+	
+	% Question 4
+	\section*{Q4: Actions from Signals (Lines 150--156, 183 and 157, 180--188)}
+	The code explicitly sends signals on certain lines; here’s what happens.
+	
+	\subsection*{4.1 Sent to Child}
+	\begin{itemize}
+		\item Line 150 (\textbf{SIGUSR1}): delivered immediately to \texttt{sig\_usr1} via \texttt{sigaction}.
+		\item Line 151 (\textbf{SIGQUIT}): caught by \texttt{sig\_handler} (persistent).
+		\item Line 152 (\textbf{SIGILL}): currently masked, so remains pending.
+		\item Line 153 (\textbf{SIGURG}): handled once by \texttt{sig\_handler} installed via \texttt{signal}.
+		\item Line 154 (\textbf{SIGINT}): caught by persistent \texttt{sig\_handler}.
+		\item Line 155 (\textbf{SIGSEGV}): blocked, pending delivery.
+		\item Line 156 (\textbf{SIGTSTP}): masked by all handler masks, pending.
+		\item Line 183 (\textbf{SIGFPE}): handled once; subsequent SIGFPE defaults after handler removal.
+	\end{itemize}
+	
+	\subsection*{4.2 Sent to Parent}
+	\begin{itemize}
+		\item Line 157 (\textbf{SIGFPE}): currently masked, so pending.
+		\item Line 180 (\textbf{SIGUSR1}): not sent (child’s PID=0).
+		\item Line 181 (\textbf{SIGQUIT}): caught by \texttt{sig\_handler} (persistent).
+		\item Line 182 (\textbf{SIGCONT}): default action resumes the process.
+		\item Line 184 (\textbf{SIGILL}): delivered to \texttt{sig\_handler}.
+		\item Line 185 (\textbf{SIGINT}): masked, pending.
+		\item Line 186 (\textbf{SIGCHLD}): handled once by one-shot \texttt{sig\_handler}.
+		\item Line 187 (\textbf{SIGHUP}): handled once, then resets.
+		\item Line 188 (\textbf{SIGTSTP}): masked, pending.
+	\end{itemize}
+	
+	% Question 5
+	\section*{Q5: Scenario 2 (All Signals Sent)}
+	Now assume both parent and child exchange every signal from lines 150--165 and 180--197.
+	
+	\subsection*{5.1 Child Receive Actions}
+	Repeated deliveries mirror Q4. Key differences:
+	\begin{itemize}
+		\item Second SIGURG (line 158) arrives after removal of one-shot handler and is ignored.
+		\item Subsequent SIGFPE, SIGHUP, SIGCHLD behave by default (terminate or ignore) once the one-shot handler is gone.
+	\end{itemize}
+	
+	\subsection*{5.2 Parent Receive Actions}
+	Follows Q4 with:
+	\begin{itemize}
+		\item Re-delivery of SIGHUP (line 164) and SIGFPE (line 165) now cause default termination.
+		\item SIGCHLD at line 193 uses default ignore.
+		\item Persistent handlers continue catching SIGQUIT and SIGILL.
+	\end{itemize}
+	
+	\subsection*{5.3 Pending Signals}
+	After all sends complete:
+	\begin{itemize}
+		\item \textbf{Parent:} SIGFPE, SIGINT, SIGTSTP remain in the waiting mask.
+		\item \textbf{Child:} SIGILL, SIGSEGV, SIGTSTP remain pending.
+	\end{itemize}
+	
+	% Question 6
+	\section*{Q6: Terminating Signals}
+	Any signal with default disposition \textit{terminate} or \textit{core dump} can kill the process when unhandled or after a one-shot handler is removed. Notable examples in this program include:\
+	SIGKILL, SIGBUS, SIGTRAP, SIGSYS, SIGIOT; plus repeated SIGFPE or SIGHUP once their custom handlers have executed.
+	
+	% Question 7
+	\section*{Q7: Threads and Signals (Problem 4B)}
+	\subsection*{7.1 Q7.1: First Thread into \texttt{func}}
+	Thread scheduling is non-deterministic. Regardless of which thread starts first,
+	\begin{enumerate}
+		\item The initial call to \texttt{func} computes denominator  safely.
+		\item The second call sees , so denominator zero, raising \textbf{SIGFPE}. No handler exists yet, so that thread terminates.
+		\item The third call uses denominator one and completes normally.
+	\end{enumerate}
+	
+	\subsection*{7.2 Q7.2: Part /* B */ Lines}
+	\paragraph{Line C (SIGSEGV to tid2, 3 times)}
+	Thread 2 has a persistent handler for \textbf{SIGSEGV} via \texttt{sigaction}. Each of the three signals invokes the handler, producing three lines of output: ``Caught signal no = 11''.
+	
+	\paragraph{Line D (SIGINT to tid1, 3 times)}
+	Thread 1 inherited \texttt{SIG\_IGN} for SIGINT before creation. Each delivered SIGINT is ignored, yielding no output.
+	
+	\subsection*{7.3 Q7.3: External \texttt{kill(pid,sig)} Signals}
+	\paragraph{Q7.3.1: SIGSEGV (11)}
+	Any thread not currently blocking SIGSEGV may handle it. The OS picks the first available; that thread’s re-installing handler prints ``Caught signal no = 11'' on each of the three kills.
+	
+	\paragraph{Q7.3.2: SIGQUIT (3)}
+	Threads install \texttt{sig\_func} or \texttt{sig\_func2} at different times:
+	\begin{itemize}
+		\item If a thread without a custom handler receives SIGQUIT, default disposition terminates that thread.
+		\item If tid3 or main (after its handler set) receives it, they print ``Caught signal no = 3'' and continue.
+	\end{itemize}
+	
+	\paragraph{Q7.3.3: SIGBUS (7)}
+	The first installation uses \texttt{sig\_func}, then overrides with \texttt{sig\_func2}. Each delivery invokes the active handler, printing ``Caught signal no = 7''.
+	
+	% Question 8
+	\section*{Q8: Multi‐threaded Sieve (Problem 5A)}
+	Implement two threads:
+	\begin{itemize}
+		\item \textbf{Sieve thread:} Allocate array , mark every multiple of each prime  (starting at ) as composite, stopping at . This yields all primes in  time.
+		\item \textbf{Reversible-prime thread:} Iterate through marked primes. For each prime , reverse its decimal digits to get ; check . If  is also prime, print .
+	\end{itemize}
+	Threads share read-only and write-only regions and synchronize only on startup and shutdown.
+	
+	% Question 9
+	\section*{Q9: Fibonacci Threads (Problem 5B)}
+	Original solution:
+	\begin{itemize}
+		\item Main thread reads .
+		\item Worker thread fills shared array .
+		\item Main thread \texttt{pthread\_join}s, then prints all values.
+	\end{itemize}
+	
+	To print values incrementally as they arrive:
+	\begin{enumerate}
+		\item Protect the shared array and an index counter with a mutex.
+		\item Worker, after computing , locks the mutex, increments a count, signals a condition variable, then unlocks.
+		\item Main, in a loop for  to , locks the mutex, waits on the condition until count>i, prints , unlocks.
+	\end{enumerate}
+	This allows the parent to output each Fibonacci number immediately when it becomes available.
+	
+\end{document}
+

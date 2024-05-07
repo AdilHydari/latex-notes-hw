@@ -1,0 +1,113 @@
+Signal Testing Log - Mon May  5 03:27:00 PM EDT 2025
+Testing p1 with scheduled signals:
+Time 10s: Signal 18 (SIGCONT)
+Time 12s: Signal 19 (SIGSTOP)
+Time 14s: Signal 18 (SIGCONT)
+Time 16s: Signal 19 (SIGSTOP)
+Time 18s: Signal 3 (SIGQUIT)
+Time 19s: Signal 4 (SIGILL)
+Time 21s: Signal 6 (SIGABRT)
+----------------------------------------
+Parent process PID: 21207
+Child process PID: 21210
+----------------------------------------
+Begin sending signals according to schedule:
+Sending SIGCONT (18) at 10 seconds...
+Mon May  5 03:27:11 PM EDT 2025 - Sending SIGCONT (18) to child...
+Current waitpid status at Mon May  5 03:27:11 PM EDT 2025:
+
+Sending SIGSTOP (19) at 2 seconds...
+Mon May  5 03:27:13 PM EDT 2025 - Sending SIGSTOP (19) to child...
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+Current waitpid status at Mon May  5 03:27:14 PM EDT 2025:
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+
+Sending SIGCONT (18) at 2 seconds...
+Mon May  5 03:27:16 PM EDT 2025 - Sending SIGCONT (18) to child...
+parent= 21207, child=21210, status=65535, w=21210
+continued
+Current waitpid status at Mon May  5 03:27:16 PM EDT 2025:
+stopped by signal 19
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+
+Sending SIGSTOP (19) at 2 seconds...
+Mon May  5 03:27:18 PM EDT 2025 - Sending SIGSTOP (19) to child...
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+Current waitpid status at Mon May  5 03:27:19 PM EDT 2025:
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+
+Sending SIGQUIT (3) at 2 seconds...
+Mon May  5 03:27:21 PM EDT 2025 - Sending SIGQUIT (3) to child...
+Current waitpid status at Mon May  5 03:27:21 PM EDT 2025:
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+
+Sending SIGILL (4) at 1 seconds...
+Mon May  5 03:27:22 PM EDT 2025 - Sending SIGILL (4) to child...
+Current waitpid status at Mon May  5 03:27:23 PM EDT 2025:
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+
+Sending SIGABRT (6) at 2 seconds...
+Mon May  5 03:27:25 PM EDT 2025 - Sending SIGABRT (6) to child...
+Current waitpid status at Mon May  5 03:27:25 PM EDT 2025:
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+
+Signal sequence completed.
+Parent process still running after signal sequence. Killing it.
+Test completed. Results in signal_test_output.log
+Final program output:
+----------------------------------------
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+stopped by signal 19
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
+stopped by signal 19
+parent= 21207, child=21210, status=65535, w=21210
+continued
+parent= 21207, child=21210, status=4991, w=21210
+stopped by signal 19
