@@ -178,5 +178,103 @@ For designing a 4 Kbytes data cache based solely on performance, the optimal cho
 	\end{itemize}
 \end{itemize}
 
+\section{Problem 2}
+\subsection{Assignment 1}
+\begin{enumerate}
+	\item What are the four main categories of cache performance optimizations? Relate these to the
+	formula for average memory access time.
+	\begin{itemize}
+		\item The goal of cache performance optimizations is to improve hit rate, reduce the miss rate, being able to make the miss penalty as few clock cycles as possible, and miss rate via parallelism. The formula for AMAT directly includes all of these variables, and thus optimizing these variables directly influences the memory access speed of the system. The specific optimizations are the number of associative sets, larger block sizes, a larger cache, and utilizing better cache replacement algorithms.  
+	\end{itemize}
+	\item Which of these categories does associativity affect?
+	\begin{itemize}
+		\item Increasing the associativity of a cache reduces the number of conflict misses by allowing a block to be placed in multiple locations. This enhancement decreases the overall miss rate, directly impacting the Miss Rate term in the AMAT formula.
+	\end{itemize}
+	\item Which of these categories does block size affect?
+	\begin{itemize}
+		\item A larger block size can reduce the miss rate by fetching adjacent data that is likely to be accessed soon (spatial locality), thus decreasing compulsory misses. However, a larger block size can increase the miss penalty because it takes longer to transfer a bigger block of data from the next level in the memory hierarchy.
+	\end{itemize}
+\end{enumerate}
+\subsection{Assignment 2}
+\begin{enumerate}
+	\item How is associativity, number of blocks, number of sets and cache size related?
+	\begin{itemize}
+		\item Associativity determines how many blocks can be in a single set. Higher associativity means more blocks per set.
+		\item The number of blocks is the total storage capacity divided by the block size.
+		\item The number of sets is influenced by both the total number of blocks and the associativity.
+		\item Cache Size depends on the block size, number of sets, and associativity.
+	\end{itemize}
+	\item How does these affect the average access time for L1- and L2-caches?
+	\begin{itemize}
+		\item For an L1 cache: Prioritizes low hit time over miss rate.
+		\begin{enumerate}
+			\item  Increasing associativity will increase the complexity of the hardware, increasing the hit time; higher associativity reduces conflict misses, lowering the miss rate. L1 caches need low access times however, since it is the first memory outside of registers that the CPU accesses so it makes sense that the associativity for the L1 might be low.
+			\item Increasing the number of blocks (and thus cache size) can increase the hit time due to longer access times from a larger block size; a larger cache size reduces the miss rate by storing and receiving more data on each transaction from the cache. An L1 cache is kept small on purpose, in order to have low access times to the CPU.
+			\item Increasing the number of sets (while maintaining cache size) reduces the associativity, increasing the number of conflict misses, raising the miss rate; an increased number of sets means that less collisions happen in cache, decreasing the number of conflict misses. However, if we increase the number of sets while increasing the size of cache, we reduce the conflict misses overall; the complexity of the hardware is dramatically increased, as a wider comparison would have to happen over the whole cache, increasing hit times. It makes sense for an L1 cache to have a lower number of sets to maximize the AMAT.  
+		\end{enumerate}
+		\item For an L2 cache: Prioritizes low miss rate over hit time.
+		\begin{enumerate}
+			\item  L2 caches can afford a slightly higher hit time because they are not accessed as frequently as L1 caches; Higher associativity reduces the miss rate, which is crucial for L2 caches to prevent slower main memory accesses. An L2 cache would have a high associativity, slowing down the hit time, but decreasing the miss rate, since L2 is not accessed as frequently as L1. 
+			\item Increasing the number of blocks can increase the hit time due to longer access times; a larger cache size reduces the miss rate by storing more data on each transaction. L2 caches are designed to be larger to reduce miss rates, with a higher hit time.
+			\item A higher set size while increasing the size of cache, increases the hit time as a larger comparison would have to happen across the cache; a higher set size means miss rate is reduced by reducing conflict misses.
+		\end{enumerate}
+	\end{itemize}
+\end{enumerate}
+\subsection{Deliverable}
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{ccc}
+		\toprule
+		\textbf{Associativity} & \textbf{Number of Sets} & \textbf{Unified Cache Miss Rate (\%)} \\
+		\midrule
+		1-way  & 1024 &  0.0372  \\
+		2-way  & 512  &   0.0238 \\
+		4-way  & 256  &  0.0209  \\
+		8-way  & 128  &   0.0204 \\
+		\midrule
+		1-way  & 512  &   0.0584 \\
+		2-way  & 256  &   0.0449 \\
+		4-way  & 128  &   0.0283 \\
+		8-way  & 64   &   0.0233 \\
+		\midrule
+		1-way  & 256  &    0.0967\\
+		2-way  & 128  &    0.0789\\
+		4-way  & 64   &    0.0742\\
+		8-way  & 32   &    0.0766\\
+		\bottomrule
+	\end{tabular}
+	\caption{Cache Simulation Results}
+\end{table}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Miss Ratio (D-Cache)} & \textbf{1-way} & \textbf{2-way} & \textbf{4-way} & \textbf{8-way} \\ \hline
+		\textbf{32 sets}  &       0.1372    &     0.0503       &        0.0236      &     0.0186        \\ \hline
+		\textbf{64 sets}  &      0.0654       &      0.0281       &     0.0187       &       0.0184      \\ \hline
+		\textbf{128 sets} &      0.0409       &       0.0223      &      0.0185       &      0.0177       \\ \hline
+		\textbf{256 sets} &       0.0274      &      0.0195       &      0.0178       &      0.0177        \\ \hline
+		\textbf{512 sets} &      0.0210       &      0.0180       &      0.0177       &     0.0177        \\ \hline
+	\end{tabular}
+	\caption{Miss Ratio for D-Cache}
+	\label{tab:D1-Cache}
+\end{table}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		\textbf{Miss Ratio (I-Cache)} & \textbf{1-way} & \textbf{2-way} & \textbf{4-way} & \textbf{8-way} \\ \hline
+		\textbf{32 sets}  &       0.4269      &       0.3734     &      0.2879       &       0.1983      \\ \hline
+		\textbf{64 sets}  &        0.3764    &       0.2920     &       0.2255      &      0.1613      \\ \hline
+		\textbf{128 sets} &       0.3030      &       0.2268     &        0.1618    &      0.1028       \\ \hline
+		\textbf{256 sets} &        0.2503     &      0.1720       &      0.0994       &       0.0176      \\ \hline
+		\textbf{512 sets} &       0.1833     &      0.1010      &       0.0348      &      0.0142      \\ \hline
+	\end{tabular}
+	\caption{Miss Ratio for I-Cache}
+	\label{tab:I1-Cache}
+\end{table}
+
+
+
 	
 \end{document}

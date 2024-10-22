@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Fedora 40) (preloaded format=pdflatex 2024.8.8)  16 OCT 2024 19:01
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Fedora 40) (preloaded format=pdflatex 2024.8.8)  21 OCT 2024 13:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -466,7 +466,7 @@ Package hyperref Info: Link coloring OFF on input line 17.
 \@outlinefile=\write3
 \openout3 = `main.out'.
 
-<Comparison of Instruction Types Between Alpha and Pisa ISAs.png, id=36, 1194.4
+<Comparison of Instruction Types Between Alpha and Pisa ISAs.png, id=52, 1194.4
 625pt x 690.58pt>
 File: Comparison of Instruction Types Between Alpha and Pisa ISAs.png Graphic f
 ile (type png)
@@ -477,31 +477,41 @@ Package pdftex.def Info: Comparison of Instruction Types Between Alpha and Pisa
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<icache.png, id=51, 613.21095pt x 397.84634pt>
+<icache.png, id=67, 613.21095pt x 397.84634pt>
 File: icache.png Graphic file (type png)
 <use icache.png>
 Package pdftex.def Info: icache.png  used on input line 82.
 (pdftex.def)             Requested size: 430.00462pt x 278.98833pt.
  [2 <./Comparison of Instruction Types Between Alpha and Pisa ISAs.png>]
-<dcache.png, id=58, 620.7993pt x 397.84634pt>
+<dcache.png, id=74, 620.7993pt x 397.84634pt>
 File: dcache.png Graphic file (type png)
 <use dcache.png>
 Package pdftex.def Info: dcache.png  used on input line 104.
 (pdftex.def)             Requested size: 430.00462pt x 275.57663pt.
 
 [3 <./icache.png>] [4 <./dcache.png>] [5{/usr/share/texlive/texmf-dist/fonts/en
-c/dvips/cm-super/cm-super-ts1.enc}] [6] (./main.aux)
+c/dvips/cm-super/cm-super-ts1.enc}] [6]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[7] [8] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: B2AF9212EE3D83F6DF967F8C341862D1;958.
+(rerunfilecheck)             Checksum: 6DCB0509A6B0ED8D25FBB408F92EF817;1404.
  ) 
 Here is how much of TeX's memory you used:
- 11961 strings out of 476041
- 195907 string characters out of 5793165
+ 11987 strings out of 476041
+ 196172 string characters out of 5793165
  1881388 words of memory out of 6000000
- 32243 multiletter control sequences out of 15000+600000
+ 32249 multiletter control sequences out of 15000+600000
  518005 words of font info for 52 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
- 75i,9n,117p,592b,568s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,9n,117p,684b,670s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texli
@@ -509,10 +519,10 @@ ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/public/cm-super/sfrm1000.pfb>
-Output written on main.pdf (6 pages, 359241 bytes).
+Output written on main.pdf (8 pages, 367307 bytes).
 PDF statistics:
- 121 PDF objects out of 1000 (max. 8388607)
- 92 compressed objects within 1 object stream
- 23 named destinations out of 1000 (max. 500000)
- 80 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 168 PDF objects out of 1000 (max. 8388607)
+ 136 compressed objects within 2 object streams
+ 43 named destinations out of 1000 (max. 500000)
+ 112 words of extra memory for PDF output out of 10000 (max. 10000000)
 
