@@ -11,7 +11,7 @@
 \usepackage{float}         % For improved figure placement
 \usepackage{hyperref}      % For hyperlinks within the document
 
-\title{Project 1 - Question 2 - Part 1}
+\title{Project 1 - Part 2}
 \author{Adil Hydari}
 \date{\today}
 \begin{document}
@@ -68,7 +68,7 @@
 \subsection{Comparison with Histogram}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{Comparison of Instruction Types Between Alpha and Pisa ISAs.png}
+	\includegraphics[scale=0.3]{Comparison of Instruction Types Between Alpha and Pisa ISAs.png}
 	\caption{Comparison of Instruction Types (Averages) Between Alpha and Pisa ISAs}
 	\label{fig:memory_bandwidth}
 \end{figure}
@@ -79,7 +79,7 @@ Seems like PISA generates a lot more instructions, compared to Alpha, from the c
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{icache.png}
+	\includegraphics[scale=0.5]{icache.png}
 	\caption{Miss Ratio vs Associativity for I-Cache}
 	\label{fig:icache}
 \end{figure}
@@ -101,7 +101,7 @@ Seems like PISA generates a lot more instructions, compared to Alpha, from the c
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=\linewidth]{dcache.png}
+	\includegraphics[scale=0.5]{dcache.png}
 	\caption{Miss Ratio vs Associativity for D-Cache}
 	\label{fig:dcache}
 \end{figure}
@@ -128,7 +128,7 @@ Seems like PISA generates a lot more instructions, compared to Alpha, from the c
 
 \textbf{Q1: For a given number of sets, what effect does increasing associativity have on the miss ratio?}
 
-For a given number of sets, increasing associativity reduces the miss ratio. This is evident from the tables where, for each fixed number of sets, the miss ratio decreases as the associativity increases. Higher associativity allows more blocks to reside in the same set, reducing conflict misses caused by multiple blocks competing for the same cache location.
+For a given number of sets, increasing associativity reduces the miss ratio. This is evident from the tables where, for each fixed number of sets, the miss ratio decreases as the associativity increases. Higher associativity allows more blocks to be in the same set, reducing conflict misses caused by multiple blocks competing for the same cache location.
 
 \textbf{Q2: For a given associativity, what is the effect of increasing the number of sets?}
 
@@ -136,11 +136,11 @@ For a given associativity, increasing the number of sets decreases the miss rati
 
 \textbf{Q3: For a given cache size, how does the miss ratio change when going from an associativity of one to two to four? Explain.}
 
-For a given cache size, increasing associativity from one to two to four generally leads to a reduction in the miss ratio, but the improvement diminishes with higher associativity. This is because, while higher associativity reduces conflict misses by allowing more blocks per set, the total number of unique blocks that can be stored (cache capacity) remains the same. Therefore, the initial increase from direct-mapped (1-way) to 2-way associativity shows a noticeable improvement, but going from 2-way to 4-way yields smaller gains due to diminishing returns.
+For a given cache size, increasing associativity from one to two to four generally leads to a reduction in the miss ratio, but the improvement diminishes with higher associativity. This is because, while higher associativity reduces conflict misses by allowing more blocks per set, the total number of unique blocks that can be stored (cache capacity) remains the same. Therefore, the initial increase from direct-mapped (1-way) to 2-way associativity shows a noticeable improvement, but going from 2-way to 4-way yields \textit{smaller gains} due to diminishing returns.
 
 \textbf{Q4: If you were to design an Instruction cache, limited to a total cache size of 4 Kbytes, which cache organization would you choose, based solely on performance?}
 
-For designing a 4 Kbytes instruction cache based solely on performance, the best choice is a \textbf{4-way set-associative cache with 32 sets}. This configuration offers the lowest miss ratio among the options with the same cache size (4 Kbytes). Here’s why:
+For designing a 4 Kbytes instruction cache based on performance, the best choice is a \textbf{4-way set-associative cache with 32 sets}. This configuration offers the lowest miss ratio among the options with the same cache size (4 Kbytes). 
 
 \begin{itemize}
 	\item Cache size = Number of sets $\times$ Associativity $\times$ Block size
@@ -160,7 +160,7 @@ For designing a 4 Kbytes instruction cache based solely on performance, the best
 
 \textbf{Q5: If you were to design a data cache, limited to a total cache size of 4 Kbytes, which cache organization would you choose, based solely on performance?}
 
-For designing a 4 Kbytes data cache based solely on performance, the optimal choice is also a \textbf{4-way set-associative cache with 32 sets}. This configuration provides the lowest miss ratio among the available options with the same cache size. Supporting data:
+For designing a 4 Kbytes data cache based on performance, the optimal choice is a \textbf{4-way set-associative cache with 32 sets}. This configuration provides the lowest miss ratio among the available options with the same cache size. Supporting data:
 
 \begin{itemize}
 	\item Cache size = Number of sets $\times$ Associativity $\times$ Block size
@@ -220,7 +220,9 @@ For designing a 4 Kbytes data cache based solely on performance, the optimal cho
 		\end{enumerate}
 	\end{itemize}
 \end{enumerate}
-\subsection{Deliverable}
+\newpage
+\subsection{Deliverable 1}
+\textbf{Using sim-cache \& test-math for Cache sizes of 32 KB, 16 KB, and 8 KB}
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{ccc}
@@ -243,36 +245,121 @@ For designing a 4 Kbytes data cache based solely on performance, the optimal cho
 		8-way  & 32   &    0.0766\\
 		\bottomrule
 	\end{tabular}
-	\caption{Cache Simulation Results}
+	\caption{Unified Cache Simulation Results}
 \end{table}
-\begin{table}[h]
+\begin{figure}[H]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|}
-		\hline
-		\textbf{Miss Ratio (D-Cache)} & \textbf{1-way} & \textbf{2-way} & \textbf{4-way} & \textbf{8-way} \\ \hline
-		\textbf{32 sets}  &       0.1372    &     0.0503       &        0.0236      &     0.0186        \\ \hline
-		\textbf{64 sets}  &      0.0654       &      0.0281       &     0.0187       &       0.0184      \\ \hline
-		\textbf{128 sets} &      0.0409       &       0.0223      &      0.0185       &      0.0177       \\ \hline
-		\textbf{256 sets} &       0.0274      &      0.0195       &      0.0178       &      0.0177        \\ \hline
-		\textbf{512 sets} &      0.0210       &      0.0180       &      0.0177       &     0.0177        \\ \hline
-	\end{tabular}
-	\caption{Miss Ratio for D-Cache}
-	\label{tab:D1-Cache}
-\end{table}
-\begin{table}[h]
+	\includegraphics[scale=0.5]{deliv1_unified.png}
+	\caption{Unified cache miss rate}
+	\label{fig:Unifed Cache Results}
+\end{figure}
+\begin{table}[h!]
 	\centering
-	\begin{tabular}{|c|c|c|c|c|}
-		\hline
-		\textbf{Miss Ratio (I-Cache)} & \textbf{1-way} & \textbf{2-way} & \textbf{4-way} & \textbf{8-way} \\ \hline
-		\textbf{32 sets}  &       0.4269      &       0.3734     &      0.2879       &       0.1983      \\ \hline
-		\textbf{64 sets}  &        0.3764    &       0.2920     &       0.2255      &      0.1613      \\ \hline
-		\textbf{128 sets} &       0.3030      &       0.2268     &        0.1618    &      0.1028       \\ \hline
-		\textbf{256 sets} &        0.2503     &      0.1720       &      0.0994       &       0.0176      \\ \hline
-		\textbf{512 sets} &       0.1833     &      0.1010      &       0.0348      &      0.0142      \\ \hline
+	\begin{tabular}{ccc}
+		\toprule
+		\textbf{Associativity} & \textbf{Number of Sets} & \textbf{Instruction Cache Miss Rate (\%)} \\
+		\midrule
+		1-way  & 1024 &   0.0330 \\
+		2-way  & 512  &    0.0200\\
+		4-way  & 256  &    0.0185\\
+		8-way  & 128  &   0.0178 \\
+		\midrule
+		1-way  & 512  &    0.0527\\
+		2-way  & 256  &    0.0398\\
+		4-way  & 128  &   0.0220\\
+		8-way  & 64   &   0.0194\\
+		\midrule
+		1-way  & 256  &    0.0898\\
+		2-way  & 128  &    0.0673\\
+		4-way  & 64   &    0.0615\\
+		8-way  & 32   &    0.0527\\
+		\bottomrule
 	\end{tabular}
-	\caption{Miss Ratio for I-Cache}
-	\label{tab:I1-Cache}
+	\caption{Instruction Cache Simulation Results}
 \end{table}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{deliv1_instruction.png}
+	\caption{Instruction cache miss rate}
+	\label{fig:Instruction Cache Results}
+\end{figure}
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{ccc}
+		\toprule
+		\textbf{Associativity} & \textbf{Number of Sets} & \textbf{Data Cache Miss Rate (\%)} \\
+		\midrule
+		1-way  & 1024 &    0.0329\\
+		2-way  & 512  &    0.0282\\
+		4-way  & 256  &    0.0275\\
+		8-way  & 128  &    0.0275\\
+		\midrule
+		1-way  & 512  &    0.0422\\
+		2-way  & 256  &    0.0296\\
+		4-way  & 128  &   0.0276\\
+		8-way  & 64   &   0.0275\\
+		\midrule
+		1-way  & 256  &    0.0501\\
+		2-way  & 128  &    0.0341\\
+		4-way  & 64   &    0.0298\\
+		8-way  & 32   &    0.0292\\
+		\bottomrule
+	\end{tabular}
+	\caption{Data Cache Simulation Results}
+\end{table}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{deliv_data.png}
+	\caption{Data cache miss rate}
+	\label{fig:Data Cache Results}
+\end{figure}
+\newpage
+\subsection{Deliverable 2}
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\multicolumn{4}{|c|}{L2 data cache} \\
+		\hline
+		fixed total size & No of sets & block size ($\geq$ 256) & associativity \\
+		\hline
+		512 KB & 128 & 512 & 8\\
+		\hline
+	\end{tabular}
+	\caption{L2 Data Cache}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		L1 size & L1 assoc & No of sets & block size & CPI & Average Memory Access Time (cycles) \\
+		\hline
+		32 KB & 2 & 1024 & 16 &  1.0395& 6.2\\
+		32 KB & 2 & 512& 32 &  0.9646& 5.16\\
+		32 KB & 2 & 256& 64 & 0.9253 & 4.64\\
+		32 KB & 2 & 128& 128 &  0.9107& 4.12\\
+		32 KB & 2 & 64& 256 & 0.9157 & 4.328\\
+		\hline
+	\end{tabular}
+	\caption{L1 Data Cache}
+\end{table}
+\begin{figure}[H]
+	\centering
+	\begin{minipage}{0.48\textwidth}
+		\centering
+		\includegraphics[scale=0.5]{block_cpi.png}
+		\caption{Block size vs CPI}
+		\label{fig:block vs cpi}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.48\textwidth}
+		\centering
+		\includegraphics[scale=0.5]{block_amat.png}
+		\caption{Block size vs AMAT}
+		\label{fig:block vs AMAT}
+	\end{minipage}
+\end{figure}
 
 
 
