@@ -1,0 +1,104 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: references.bib
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2913 of file ACM-Reference-Format.bst
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=200001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2974 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2974 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2974 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2974 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2974 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 2974 of file ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Warning--empty publisher in 6136855
+Warning--empty address in 6136855
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 3072 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 3072 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 3072 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 3072 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 3072 of file ACM-Reference-Format.bst
+Too many commas in name 1 of "Huang, Y., Song, A., Guo, C. and Yang, Y." for entry johnson2010asic
+while executing---line 3072 of file ACM-Reference-Format.bst
+Warning--empty publisher in johnson2010asic
+Warning--empty address in johnson2010asic
+Warning--empty booktitle in kim2015verilog
+Warning--empty publisher in kim2015verilog
+Warning--empty address in kim2015verilog
+You've used 4 entries,
+            5981 wiz_defined-function locations,
+            1501 strings with 18642 characters,
+and the built_in function-call counts, 4741 in all, are:
+= -- 544
+> -- 142
+< -- 0
++ -- 49
+- -- 51
+* -- 311
+:= -- 450
+add.period$ -- 20
+call.type$ -- 4
+change.case$ -- 29
+chr.to.int$ -- 4
+cite$ -- 11
+duplicate$ -- 445
+empty$ -- 309
+format.name$ -- 63
+if$ -- 1142
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 19
+newline$ -- 75
+num.names$ -- 28
+pop$ -- 198
+preamble$ -- 1
+purify$ -- 61
+quote$ -- 0
+skip$ -- 164
+stack$ -- 0
+substring$ -- 321
+swap$ -- 39
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 106
+warning$ -- 7
+while$ -- 27
+width$ -- 0
+write$ -- 118
+(There were 21 error messages)
