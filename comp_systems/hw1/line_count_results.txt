@@ -1,0 +1,5 @@
+File: A1 has 1 lines.
+File: A2 has 1 lines.
+----------------------------------
+Number of files processed: 2
+Total number of lines: 2
