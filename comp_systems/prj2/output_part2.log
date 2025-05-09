@@ -1,0 +1,11 @@
+Parent pid=93325 starting (OPTION B – Part 1)
+Child[0] pid=93327 sum(0..15)=120 done
+Parent pid=93325 starting (OPTION B – Part 1)
+Child[2] pid=93329 sum(0..15)=120 done
+Parent pid=93325 starting (OPTION B – Part 1)
+Child[1] pid=93328 sum(0..15)=120 done
+Parent pid=93325 starting (OPTION B – Part 1)
+Child[3] pid=93330 sum(0..15)=120 done
+Parent pid=93325 starting (OPTION B – Part 1)
+Parent (pid=93325) sleeping 10s – now susceptible to default actions…
+Parent done – exiting cleanly.

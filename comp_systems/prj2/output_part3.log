@@ -1,0 +1,16 @@
+[93397] child_idx=0 received SIGILL (4) from sender=93252
+[93397] child_idx=0 received SIGCHLD (17) from sender=93252
+[93398] child_idx=1 received SIGHUP (1) from sender=93252
+[93400] child_idx=3 received SIGTSTP (20) from sender=93252
+Parent pid=93395 starting (OPTION B – Part 1)
+Child[0] pid=93397 sum(0..15)=120 done
+Parent pid=93395 starting (OPTION B – Part 1)
+Child[1] pid=93398 sum(0..15)=120 done
+Parent pid=93395 starting (OPTION B – Part 1)
+Child[3] pid=93400 sum(0..15)=120 done
+Parent pid=93395 starting (OPTION B – Part 1)
+Child[2] pid=93399 sum(0..15)=120 done
+Parent pid=93395 starting (OPTION B – Part 1)
+Parent (pid=93395) sleeping 10s – now susceptible to default actions…
+Pending signals for parent: 
+Parent done – exiting cleanly.
