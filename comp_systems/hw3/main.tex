@@ -1,0 +1,176 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,geometry}
+\usepackage{enumerate}
+
+\geometry{margin=1in}
+\begin{document}
+	
+	\begin{center}
+		{\Large \textbf{Computer Sytems - Solutions to Problems 1--4}}
+	\end{center}
+	
+	\bigskip
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section*{Problem 1: Processes, IPC, and Signals}
+	
+	\noindent
+	\textbf{Part 1 (4 points)}
+	\begin{enumerate}
+		\item \textbf{Steady state:} A process is “stuck” but not terminated:
+		\begin{itemize}
+			\item Blocked on I/O or a resource forever,
+			\item Running a function (like \texttt{g()}) that never returns.
+		\end{itemize}
+		
+		\item \textbf{Zombie process:} A process has exited but is not yet \texttt{wait}-reaped by its parent.  It disappears once the parent (or \texttt{init}) calls \texttt{wait()}.
+		
+		\item
+		\[
+		\texttt{wp} = \texttt{wait}(\&\texttt{status}),\quad
+		\texttt{wp} = 1083,\quad
+		\texttt{WIFEXITED(status)}=1,\quad
+		\texttt{WEXITSTATUS(status)}=101.
+		\]
+		Then process 1000 is the \emph{parent} of process 1083.  Process 1083’s final call was effectively \texttt{exit(101)}.
+		
+		\item \textbf{Pipes:}
+		\begin{itemize}
+			\item \texttt{read()} after the last writer closes yields 0 (EOF).
+			\item \texttt{write()} when no readers exist raises \texttt{SIGPIPE} or returns \texttt{EPIPE}.
+		\end{itemize}
+	\end{enumerate}
+	
+	\noindent
+	\textbf{Part 2 (6 points): Process Tree Sketch}
+	
+	\noindent
+	A parent creates three pipes and three children. 
+	\begin{itemize}
+		\item \textbf{Child i=0} eventually reads from \texttt{fd[0]}, forks subchildren, blocks in \texttt{wait} or ends up stuck in \texttt{g(0,5)}.
+		\item \textbf{Child i=1} writes a value to child~0, reads from \texttt{fd[1]}, forks subchildren, finally calls \texttt{g(1,5)}.
+		\item \textbf{Child i=2} is killed by the parent (\texttt{SIGKILL}) and then reaped.
+	\end{itemize}
+	
+	\noindent
+	\textbf{IPC:} Child~1 sends an integer to child~0 via \texttt{fd[0]}, parent writes to \texttt{fd[2]} but kills child~2 before it can read, and parent reaps child~2. 
+	All surviving processes remain in functions like \texttt{g()} or \texttt{wait()}, forming a permanent steady state.
+	
+	\bigskip
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section*{Problem 2: Processes and Pipes}
+	
+	\noindent
+	\textbf{Part 1 (4 points): Explanation}
+	
+	This program creates four children in a loop (\texttt{i=0..3}). Each child:
+	\begin{enumerate}
+		\item Uses a pipe to exchange data,
+		\item Forks subchildren based on how many bytes are read,
+		\item Ends by calling \texttt{f(\dots)} (which never returns).
+	\end{enumerate}
+	The parent then sends \texttt{SIGUSR1} to the child \texttt{i=2}, causing it to exit immediately; the parent reaps that child’s status.  Meanwhile, children \texttt{i=0,1,3} eventually block in \texttt{wait()} for their own subchildren (or call \texttt{f(\dots)} themselves).  The parent also gets stuck in its second \texttt{wait()}, since no other child exits.
+	
+	\medskip
+	
+	\noindent
+	\textbf{Part 2 (3 points): Final Process Tree}
+	
+	\begin{itemize}
+		\item \textbf{Parent}: Created children \texttt{i=0..3}. Reaps only child~2, then blocks in \texttt{wait()}.
+		\item \textbf{Child i=2}: Receives \texttt{SIGUSR1} early, calls \texttt{exit()}, then is reaped.
+		\item \textbf{Child i=0}: Reads some bytes, forks subchildren (each stuck in \texttt{f()}), and itself ends up blocked in \texttt{wait()} or in \texttt{f(0,5)}.
+		\item \textbf{Child i=1}: Similar behavior: reads bytes, forks, blocked waiting on subchildren, or calls \texttt{f(1,5)}.
+		\item \textbf{Child i=3}: Reads bytes, forks subchildren, then blocks in \texttt{wait()}.
+	\end{itemize}
+	
+	\noindent
+	\textbf{IPC:} 
+	\begin{itemize}
+		\item Child~1 writes a value to child~0, 
+		\item The parent writes to child~2’s pipe but kills it with \texttt{SIGKILL},
+		\item Parent also writes data for child~3 to read.
+	\end{itemize}
+	All remaining processes are stuck in either \texttt{wait()} or a never‐returning \texttt{f()}.
+	
+	
+	\bigskip
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section*{Problem 3: Processes and Pipes}
+	
+	\noindent
+	\textbf{Part 1 (4 points): Explanation}
+	
+	A loop creates four children (\(\texttt{i=0..3}\)), each associated with a pipe.  The parent writes a PID into each pipe (or closes the pipe, causing the child to read zero).  Each child:
+	\begin{enumerate}
+		\item Reads a \texttt{pid\_t} from its pipe,
+		\item If that read value is positive, sends \texttt{SIGUSR1} to the indicated process,
+		\item Calls \texttt{f(i, pid[i])} (which never returns).
+	\end{enumerate}
+	The parent also sets up a signal handler for \texttt{SIGUSR1} that calls \texttt{f(0, -3)}.  Hence, any child receiving \texttt{SIGUSR1} will jump into that handler and remain stuck.  The parent tries a \texttt{wait(NULL)} but never reaps any child (none exit), so it remains blocked or otherwise stuck forever.
+	
+	\medskip
+	
+	\noindent
+	\textbf{Part 2 (3 points): Final Process Tree}
+	
+	\begin{itemize}
+		\item \textbf{Parent}: Stuck at \texttt{wait(NULL)}; no child ever exits.
+		\item \textbf{Child~0}: Possibly gets \texttt{SIGUSR1} from Child~1, then runs \texttt{handler} $\rightarrow$ \texttt{f(0, -3)} forever.
+		\item \textbf{Child~1}: After reading Child~0’s PID, does \texttt{kill(pid[0], SIGUSR1)}, then calls \texttt{f(1, pid[0])}.
+		\item \textbf{Child~2, Child~3}: Typically read zero from their pipes (EOF), do not send signals, and remain in \texttt{f(2,0)} or \texttt{f(3,0)}.
+	\end{itemize}
+	
+	Because \texttt{f()} never returns, all processes remain active and blocked in their respective states, forming a permanent steady state.
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section*{Problem 4: Processes and Pipes}
+	
+	\noindent
+	\textbf{Code and Behavior:}
+	\begin{enumerate}
+		\item The parent forks a child, then writes two chunks of data to the pipe:
+		\begin{itemize}
+			\item \texttt{8} bytes initially (\(\texttt{2*sizeof(int)}\)),
+			\item Another \texttt{8} bytes afterward (\(\texttt{r1}\) is 8).
+		\end{itemize}
+		\item The child reads data in three calls:
+		\begin{itemize}
+			\item \texttt{2} bytes first (\(\texttt{r3} = 2\)),
+			\item \texttt{4} bytes second (\(\texttt{r5} = 4\)),
+			\item \texttt{3} bytes third (\(\texttt{r6} = 3\)).
+		\end{itemize}
+		\item After writing, the parent does \texttt{waitpid(..., WNOHANG)}: if the child has not exited, it returns \texttt{0}. 
+	\end{enumerate}
+	
+	\noindent
+	\textbf{Values of \(\texttt{r1, r2, r3, r5, r6, r7}\) and Orphans/Zombies:}
+	\begin{itemize}
+		\item 
+		\[
+		r1 = 8, \quad
+		r2 = 8, \quad
+		r3 = 2, \quad
+		r5 = 4, \quad
+		r6 = 3, \quad
+		r7 = 0 \ (\text{child not exited yet}).
+		\]
+		\item The child does a final \texttt{sleep(20)} unless line~D is removed, in which case it may exit first. 
+		\begin{itemize}
+			\item If the child outlives the parent, it becomes an orphan (no zombies remain).
+			\item If line~D is removed, the child can finish early and be reaped by the parent (\(\texttt{r7}>0\)), meaning no orphan at the end.
+		\end{itemize}
+	\end{itemize}
+	
+	\noindent
+	\textbf{Summary of Cases:}
+	\begin{itemize}
+		\item \textbf{No lines removed (Q1)}: \(\texttt{r1=8, r2=8, r3=2, r5=4, r6=3, r7=0}\), one orphan (the child), no zombies.
+		\item \textbf{Removing A, B, or C (Q2--Q4)}: Same read/write sizes and \(\texttt{r7=0}\); child still outlives the parent, becoming an orphan.
+		\item \textbf{Removing D (Q5)}: Child exits faster, so typically \(\texttt{r7}=\text{childPID}>0\); no orphan remains.
+	\end{itemize}
+	
+	
+\end{document}
